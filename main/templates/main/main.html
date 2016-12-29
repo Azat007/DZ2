@@ -1,0 +1,85 @@
+{% extends '../base.html' %}
+{% load static %}
+
+{% block style %}
+    <link rel="stylesheet" type="text/css" href="{% static 'main/style.css' %}">
+{% endblock %}
+
+{% block content %}
+    
+    <div class="container_list clearfix">
+
+        {% if authorized %}
+        <!-- add new record -->
+        <div id="modal_window">
+        
+            <form id="form_add" class="clearfix" enctype="multipart/form-data" name="form_add" method="POST">
+                <div class="header clearfix">
+                    <h5>Добавить новый профиль репетитора</h5>
+                    <div class="button anim" id="hide_modal_window">
+                        &#215;
+                    </div>
+                </div>
+                <div class="left_side">
+                    <div id="add_image" class="anim">+
+                        {{ add_form.image }}
+                        <div id="pre_img"></div>
+                    </div>
+                </div>
+                <div class="right_side">
+                    {% csrf_token %}
+                    {{ add_form.name }}
+                    {{ add_form.country }}
+                    {{ add_form.sportType }}
+                    {{ add_form.prizeCount }}
+                    {{ add_form.desc }}
+                </div>
+                <div class="footer clearfix">
+                    <div id="add_rec_button" class="anim">Add</div>
+                </div>
+            </form>
+        </div>
+        <!-- add new record -->
+        {% endif %}
+
+        <div class="left col">
+            <div class="ext_info" id="left_bar_stick">
+                <h3>Курсы</h3>
+                <p>
+                    Весомый вклад в распространение репетиторских услуг в России и странах СНГ вносит Интернет. Сейчас существует довольно большое количество компаний, предлагающих помощь репетиторам по продвижению их услуг в сети. На сайтах таких компаний репетиторы могут зарегистрироваться, создать собственную анкету и разместить информацию о виде оказываемых услуг, своём опыте и достижениях. Наибольшее распространение подобные услуги получили в Москве и Санкт-Петербурге, однако существует и множество региональных подразделений.
+                </p>
+            </div>
+        </div>
+        <div class="right col">
+    
+        {% for team in teams %}
+
+            <div class="list_obj clearfix">
+                <div class="image" style="background-image: url({% static team.imageUrl %})"></div>
+                <div class="data clearfix">
+                    <h5 class="name">{{ team.name   }}</h5>
+                    <div class="attr_block clearfix">
+                        <label>Город: {{ team.country }}</label>
+                        <label>Предмет: {{ team.sportType }}</label>
+                        <label>Опыт: {{ team.prizeCount }}</label>
+                    </div>
+                    <p class="desc_short">
+                        {{ team.desc }}
+                    </p>
+                </div>
+                <a class="view anim" href="{% url 'single_object' team_id=team.id %}" target="_blank" >Посмотреть</a>
+            </div>
+
+        {% endfor %}
+
+            <div id="loading_block"></div>
+        </div>
+    </div>
+
+{% endblock %}
+
+
+{% block scripts %}
+    <script type="text/javascript" src="{% static 'main/script.js' %}">
+    </script>
+{% endblock %}
